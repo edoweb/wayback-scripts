@@ -11,6 +11,7 @@ logfile=/opt/regal/logs/ks.auto_add.log
 data_basedir=/data2
 echo "" >> $logfile
 echo "********************************************************************************" >> $logfile
+echo `date`
 echo `date` >> $logfile
 echo "START Auto adding new web harvests"
 echo "START Auto adding new web harvests" >> $logfile
@@ -202,6 +203,7 @@ cd /opt/regal/wayback-scripts
 ./ks.create-path-index-weltweit.sh >> $logfile
 
 echo "********************************************************************************" >> $logfile
+echo `date`
 echo `date` >> $logfile
 echo "ENDE Auto adding new web harvests"
 echo "ENDE Auto adding new web harvests" >> $logfile
