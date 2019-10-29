@@ -15,5 +15,17 @@ cat cdx-dateien/edoweb:*/20*/*.cdx cdx-dateien/edoweb_cdn:*/20*/*.cdx cdx-dateie
 cd cdx-index/
 cat index001.cdx | sort -u > index.tmp.cdx
 mv index.tmp.cdx index001.cdx
-XGH index.cdx
+# Hier Historienstände rotieren und ältesten wegschmeißen
+cd cdx-index.HIST/
+rm index.cdx.7
+N=7
+M=6
+while [ $M -gt 0 ]; do
+   # echo Zeile $N
+    mv index.cdx.$M index.cdx.$N
+   ((N--))
+   ((M--))
+done
+cd ..
+mv index.cdx cdx-index.HIST/index.cdx.1
 mv index001.cdx index.cdx
