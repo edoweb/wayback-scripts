@@ -9,5 +9,17 @@ cd $collection_verz
 export LC_ALL=C;
 cat path-index.001.txt | sort -u > path-index.sorted.txt;
 mv path-index.sorted.txt path-index.001.txt
-XGH path-index.txt
+# Hier Historienstände rotieren und ältesten wegschmeißen
+cd lesesaal_cdx.HIST/
+rm path-index.txt.7
+N=7
+M=6
+while [ $M -gt 0 ]; do
+   # echo Zeile $N
+    mv path-index.txt.$M path-index.txt.$N
+   ((N--))
+   ((M--))
+done
+cd ..
+mv path-index.txt lesesaal_cdx.HIST/path-index.txt.1
 mv path-index.001.txt path-index.txt
