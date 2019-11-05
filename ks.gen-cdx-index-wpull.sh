@@ -1,10 +1,13 @@
 #/bin/bash
-# Indexiert alle WARCS unter wpull-data, je eine .cdx-Datei pro WARC
+echo "******************************************************************"
+echo `date`
+echo "Indexiere alle WARCS unter wpull-data, je eine .cdx-Datei pro WARC"
+echo "******************************************************************"
 dataverz=/data2/wpull-data
-owb_verz=/opt/regal/openwayback
-collection_verz=/opt/regal/openwayback-data/lesesaal_cdx
+owb_verz=/opt/wayback/openwayback
+collection_verz=/opt/wayback/openwayback-data/lesesaal
 cd $dataverz
-logdatei=/opt/regal/logs/cdxindexer.log # bitte Ausgabe hierhin umleiten
+logdatei=/opt/wayback/logs/cdxindexer.log # bitte Ausgabe hierhin umleiten
 # for warc in `find . -name "*.warc.gz"`; do # dauert zu lange
 for warc in `ls edoweb:*/20*/*.warc.gz`; do
   echo "warc=$warc"

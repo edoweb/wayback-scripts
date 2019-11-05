@@ -4,8 +4,8 @@
 # Autor: Kuss, 16.09.2019 für PyWB
 #        Kuss, 28.10.2019 für OWB-CDX
 # ***************************************************************************
-collection_lesesaal=/opt/regal/openwayback-data/lesesaal_cdx
-collection_weltweit=/opt/regal/openwayback-data/weltweit_cdx
+collection_lesesaal=/opt/regal/openwayback-data/lesesaal
+collection_weltweit=/opt/regal/openwayback-data/weltweit
 owb_verz=/opt/regal/openwayback
 logfile=/opt/regal/logs/ks.auto_add.log
 data_basedir=/data2
@@ -25,14 +25,14 @@ echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 dataverz=$data_basedir/wpull-data
 cd $dataverz
 for warcfile in edoweb:*/20*/*.warc.gz; do
-  echo "warcfile=$dataverz/$warcfile" >> $logfile
+  # echo "warcfile=$dataverz/$warcfile" >> $logfile
   cdxindex=`echo $warcfile | sed 's/\.warc\.gz$/.cdx/'`
   # Gibt es in der Sammlung schon einen CDX-Index zu dieser WARC-Datei ?
   if [ -f $collection_lesesaal/cdx-dateien/$cdxindex ]; then
-    echo "Indexdatei existiert" >> $logfile
+    # echo "Indexdatei existiert" >> $logfile
     # Ist der Index neuer ?
     if test `find $collection_lesesaal/cdx-dateien/$cdxindex -prune -newer $warcfile`; then
-      echo "Indexdatei ist neuer. Nichts zu tun." >> $logfile
+      # echo "Indexdatei ist neuer. Nichts zu tun." >> $logfile
       continue
     fi
     echo "Indexdatei ist älter" >> $logfile
@@ -41,6 +41,7 @@ for warcfile in edoweb:*/20*/*.warc.gz; do
   fi
 
   # Indexdatei exsitiert noch nicht oder ist älter
+  echo "warcfile=$dataverz/$warcfile" >> $logfile
   echo "Index wird erzeugt." >> $logfile
   # Erzeugt Indexdatei
   mkdir -p $collection_lesesaal/cdx-dateien/$cdxindex
@@ -59,14 +60,14 @@ echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 dataverz=$data_basedir/heritrix-data
 cd $dataverz
 for warcfile in edoweb:*/20*/warcs/*.warc.gz; do
-  echo "warcfile=$dataverz/$warcfile" >> $logfile
+  # echo "warcfile=$dataverz/$warcfile" >> $logfile
   cdxindex=`echo $warcfile | sed 's/\.warc\.gz$/.cdx/'`
   # Gibt es in der Sammlung schon einen CDX-Index zu dieser WARC-Datei ?
   if [ -f $collection_lesesaal/cdx-dateien/$cdxindex ]; then
-    echo "Indexdatei existiert" >> $logfile
+    # echo "Indexdatei existiert" >> $logfile
     # Ist der Index neuer ?
     if test `find $collection_lesesaal/cdx-dateien/$cdxindex -prune -newer $warcfile`; then
-      echo "Indexdatei ist neuer. Nichts zu tun." >> $logfile
+      # echo "Indexdatei ist neuer. Nichts zu tun." >> $logfile
       continue
     fi
     echo "Indexdatei ist älter" >> $logfile
@@ -75,6 +76,7 @@ for warcfile in edoweb:*/20*/warcs/*.warc.gz; do
   fi
 
   # Indexdatei exsitiert noch nicht oder ist älter
+  echo "warcfile=$dataverz/$warcfile" >> $logfile
   echo "Index wird erzeugt." >> $logfile
   # Erzeugt Indexdatei
   mkdir -p $collection_lesesaal/cdx-dateien/$cdxindex
@@ -93,14 +95,14 @@ echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 dataverz=$data_basedir/cdn-data
 cd $dataverz
 for warcfile in edoweb_cdn:*/20*/*.warc.gz; do
-  echo "warcfile=$dataverz/$warcfile" >> $logfile
+  # echo "warcfile=$dataverz/$warcfile" >> $logfile
   cdxindex=`echo $warcfile | sed 's/\.warc\.gz$/.cdx/'`
   # Gibt es in der Sammlung Lesesaal schon einen CDX-Index zu dieser WARC-Datei ?
   if [ -f $collection_lesesaal/cdx-dateien/$cdxindex ]; then
-    echo "Indexdatei existiert" >> $logfile
+    # echo "Indexdatei existiert" >> $logfile
     # Ist der Index neuer ?
     if test `find $collection_lesesaal/cdx-dateien/$cdxindex -prune -newer $warcfile`; then
-      echo "Indexdatei ist neuer. Nichts zu tun." >> $logfile
+      # echo "Indexdatei ist neuer. Nichts zu tun." >> $logfile
       continue
     fi
     echo "Indexdatei ist älter" >> $logfile
@@ -109,6 +111,7 @@ for warcfile in edoweb_cdn:*/20*/*.warc.gz; do
   fi
 
   # Indexdatei exsitiert noch nicht oder ist älter
+  echo "warcfile=$dataverz/$warcfile" >> $logfile
   echo "Index wird erzeugt." >> $logfile
   # Erzeugt Indexdatei
   mkdir -p $collection_lesesaal/cdx-dateien/$cdxindex
@@ -125,14 +128,14 @@ echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 dataverz=$data_basedir/cdn-data
 cd $dataverz
 for warcfile in edoweb_cdn:*/20*/*.warc.gz; do
-  echo "warcfile=$dataverz/$warcfile" >> $logfile
+  # echo "warcfile=$dataverz/$warcfile" >> $logfile
   cdxindex=`echo $warcfile | sed 's/\.warc\.gz$/.cdx/'`
   # Gibt es in der öffentlichen Sammlung schon einen CDX-Index zu dieser WARC-Datei ?
   if [ -f $collection_weltweit/cdx-dateien/$cdxindex ]; then
-    echo "Indexdatei existiert" >> $logfile
+    # echo "Indexdatei existiert" >> $logfile
     # Ist der Index neuer ?
     if test `find $collection_weltweit/cdx-dateien/$cdxindex -prune -newer $warcfile`; then
-      echo "Indexdatei ist neuer. Nichts zu tun." >> $logfile
+      # echo "Indexdatei ist neuer. Nichts zu tun." >> $logfile
       continue
     fi
     echo "Indexdatei ist älter" >> $logfile
@@ -141,6 +144,7 @@ for warcfile in edoweb_cdn:*/20*/*.warc.gz; do
   fi
 
   # Indexdatei exsitiert noch nicht oder ist älter
+  echo "warcfile=$dataverz/$warcfile" >> $logfile
   echo "Index wird erzeugt." >> $logfile
   # Erzeugt Indexdatei
   mkdir -p $collection_weltweit/cdx-dateien/$cdxindex
@@ -158,14 +162,14 @@ echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 dataverz=$data_basedir/public-data
 cd $dataverz
 for warcfile in edoweb:*/20*/*.warc.gz edoweb:*/20*/warcs/*.warc.gz; do
-  echo "warcfile=$dataverz/$warcfile" >> $logfile
+  # echo "warcfile=$dataverz/$warcfile" >> $logfile
   cdxindex=`echo $warcfile | sed 's/\.warc\.gz$/.cdx/'`
   # Gibt es in der Weltweit-Sammlung schon einen CDX-Index zu dieser WARC-Datei ?
   if [ -f $collection_weltweit/cdx-dateien/$cdxindex ]; then
-    echo "Indexdatei existiert" >> $logfile
+    # echo "Indexdatei existiert" >> $logfile
     # Ist der Index neuer ?
     if test `find $collection_weltweit/cdx-dateien/$cdxindex -prune -newer $warcfile`; then
-      echo "Indexdatei ist neuer. Nichts zu tun." >> $logfile
+      # echo "Indexdatei ist neuer. Nichts zu tun." >> $logfile
       continue
     fi
     echo "Indexdatei ist älter" >> $logfile
@@ -174,6 +178,7 @@ for warcfile in edoweb:*/20*/*.warc.gz edoweb:*/20*/warcs/*.warc.gz; do
   fi
 
   # Indexdatei exsitiert noch nicht oder ist älter
+  echo "warcfile=$dataverz/$warcfile" >> $logfile
   echo "Index wird erzeugt." >> $logfile
   # Erzeugt Indexdatei durch Kopieren der Indexdatei vom Lesesaal
   mkdir -p $collection_weltweit/cdx-dateien/$cdxindex
