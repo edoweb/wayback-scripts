@@ -1,104 +1,42 @@
-Indexieren von Webinhalten im CDX-Verfahren (flat files) (17-22.10.2019):
+Indexieren von Webinhalten im CDX-Verfahren (flat files)
+Autor: Ingolf Kuss, Organisation: hbz-NRW, Erstelldatum: 22.10.2019
 
 I. Lesesaal-Sammlung
 Aufbau der OWB-Sammlung "lesesaal_cdx"
-edoweb@edoweb
 cd /opt/regal/wayback-scripts/
 1. ./ks.gen-cdx-index-wpull.sh    >> /opt/regal/logs/cdxindexer.log
 2. ./ks.gen-cdx-index-cdn.sh lesesaal_cdx     >> /opt/regal/logs/cdxindexer.log
 3. ./ks.gen-cdx-index-wget.sh     >> /opt/regal/logs/cdxindexer.log
 4. ./ks.gen-cdx-index-heritrix.sh >> /opt/regal/logs/cdxindexer.log
-Start 18.10.2019, 19:51 Uhr.
-vorher bereits im Index (aus wget-data):
-edoweb@edoweb:/opt/regal/openwayback-data/lesesaal_cdx/cdx-dateien$ ls edoweb:*/20*/warcs/*.cdx | wc
-   1467    1467   96317
-jetzt zusätzlich zu indexieren (aus heritrix-data):
-edoweb@edoweb:/opt/regal/heritrix-data$ ls edoweb:*/20*/warcs/*.warc.gz | wc
-   4402    4402  431003
-So 20. Okt 17:53:10 CEST 2019
-fertig.
-edoweb@edoweb:/opt/regal/openwayback-data/lesesaal_cdx/cdx-dateien$ ls edoweb:*/20*/warcs/*.cdx | wc
-   5869    5869  509712
 5. ./ks.merge-sort-cdx-indexes.sh lesesaal_cdx
-Start edoweb   19490 20117  0 11:33 pts/1    00:00:02 /bin/bash ./ks.merge-sort-cdx-indexes.sh lesesaal_cdx
-Fertig edoweb@edoweb:/opt/regal/wayback-scripts$ date
-Mo 21. Okt 12:13:27 CEST 2019
 6. ./ks.create-path-index.sh lesesaal_cdx
-edoweb@edoweb:/opt/regal/openwayback-data/lesesaal_cdx$ cat path-index.txt | wc
-   6529   13058 1092978
 
 II. Weltweit-Sammlung
-Indexieren von /data2/public-data und /data2/cdn-data in der OWB-Sammlung "weltweit_cdx"
+Indexieren von public-data und cdn-data in der OWB-Sammlung "weltweit_cdx"
 1. ./ks.gen-cdx-index-public.sh          >> /opt/regal/logs/cdxindexer.log
-edoweb@edoweb:/opt/regal/public-data$ ls edoweb:*/20*/*.warc.gz | wc
-    166     166   11723
-edoweb@edoweb:/opt/regal/public-data$ ls edoweb:*/20*/warcs/*.warc.gz | wc
-   2236    2236  190905
-*********************************************************************
-Mo 21. Okt 12:16:30 CEST 2019
-Indexiere alle WARCS unter public-data, je eine .cdx-Datei pro WARC
-*********************************************************************
-edoweb@edoweb:/opt/regal/openwayback-data/weltweit_cdx/cdx-dateien$ ls edoweb:*/20*/*.cdx edoweb:*/20*/warcs/*.cdx | wc
-   2402    2402  193020
-*****************************************************************
-Di 22. Okt 07:11:58 CEST 2019
-fertig.
-*****************************************************************
 2. ./ks.gen-cdx-index-cdn.sh weltweit_cdx     >> /opt/regal/logs/cdxindexer.log
 3. ./ks.merge-sort-cdx-indexes.sh weltweit_cdx
 4. ./ks.create-path-index.sh weltweit_cdx
-Fertig 22.10., 12:53 Uhr.
 
-Jetzt umschalten der OWB auf CDX-Index Betrieb.
-cd /opt/regal/tomcat-for-openwayback/webapps/ROOT/WEB-INF
-wayback.xml und CDXCollection.xml entsprechend geändert (Altstände sind in WEB-INF.HIST gesichert).
-
-Zunächst OWB 2.4.0 auf edoweb ausrollen.
-Die soeben geänderten Dateien holen, ins git committen:
-edoweb@edoweb:/opt/regal/openwayback/wayback-webapp/src/main/webapp/WEB-INF$ cp -p /opt/regal/tomcat-for-openwayback/webapps/ROOT/WEB-INF/wayback.xml .
-edoweb@edoweb:/opt/regal/openwayback/wayback-webapp/src/main/webapp/WEB-INF$ cp -p /opt/regal/tomcat-for-openwayback/webapps/ROOT/WEB-INF/CDXCollection.xml .
+Umschalten der OWB auf CDX-Index Betrieb.
 cd /opt/regal/openwayback
-git add BDBCollection.xml CDXCollection.xml wayback.xml (Unterpfade beachten)
-git commit -m "switch to CDX indexing"
+wayback.xml und CDXCollection.xml entsprechend geändert, gezogen von https://github.com/inkuss/openwayback/tree/hbz-lbz-2.4.0
 
-Neues "entferntes" github-Repo hinzufügen und auschecken:
+OWB 2.4.0 ausrollen.
 cd /opt/regal/openwayback
-git remote add iipc https://github.com/iipc/openwayback.git
-git fetch iipc
-git checkout openwayback-2.4.0
+git fetch inkuss
+git checkout hbz-lbz-2.4.0
+git pull
 mvn clean install
 BUILD SUCCESS
 ls -l /opt/regal/openwayback/wayback-webapp/target/openwayback-2.4.0.war
 -rw-rw-r-- 1 edoweb edoweb 53938698 Okt 22 13:59 /opt/regal/openwayback/wayback-webapp/target/openwayback-2.4.0.war
 
 
-Dann Neustart des "tomcat-for-openwayback".
-cd /opt/regal/tomcat-for-openwayback/
-./bin/shutdown.sh
-./bin/startup.sh
 Deploy des neuen WAR:
 cd /opt/regal/tomcat-for-openwayback/webapps
 rm -r ROOT
 cp -p /opt/regal/openwayback/wayback-webapp/target/openwayback-2.4.0.war /opt/regal/tomcat-for-openwayback/webapps/ROOT.war
 Das Log verfolgen:
-/opt/regal/tomcat-for-openwayback/work/Catalina/localhost/ROOT/SESSIONS.ser : Permission denied
-cd opt/regal/tomcat-for-openwayback/work/Catalina/localhost
-sudo su
-chown -R edoweb:edoweb ROOT
-Nochmal deployen (rm -r ROOT)
 Das Log verfolgen:
 22-Oct-2019 14:07:15.817 INFO [localhost-startStop-3] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /opt/regal/tomcat-for-openwayback/webapps/ROOT.war has finished in 10,101 ms
-
-Jetzt testen
-z.B. ein Objekt aus der Lesesaal-Sammlung:
-https://api.edoweb-rlp.de/wayback/20190906050645/https://www.vg-jockgrim.de/start/
-OK
-oder dies:
-https://api.edoweb-rlp.de/wayback/20160707180231/http://www.landesrecht.rlp.de/jportal/portal/page/bsrlpprod.psml
-OK, nach längerer Ladezeit
-
-Oder Objekte aus der Weltweit-Sammlung:
-https://api.edoweb-rlp.de/weltweit/20180508051059/http://www.landesrecht.rlp.de/jportal/portal/page/bsrlpprod.psml
-https://api.edoweb-rlp.de/weltweit/20190319120039/http://www.vg-badkreuznach.de/vg_bad_kreuznach/Home/
-https://api.edoweb-rlp.de/weltweit/20060119110000/http://www.bettendorf-rlp.de/index-2.html
-OK
