@@ -1,42 +1,44 @@
 Indexieren von Webinhalten im CDX-Verfahren (flat files)
-Autor: Ingolf Kuss, Organisation: hbz-NRW, Erstelldatum: 22.10.2019
+Autor: Ingolf Kuss, Organisation: hbz-NRW, Erstelldatum: 22.10.2019, letzte Aktualisierung: 06.11.2019
 
 I. Lesesaal-Sammlung
-Aufbau der OWB-Sammlung "lesesaal_cdx"
-cd /opt/regal/wayback-scripts/
-1. ./ks.gen-cdx-index-wpull.sh    >> /opt/regal/logs/cdxindexer.log
-2. ./ks.gen-cdx-index-cdn.sh lesesaal_cdx     >> /opt/regal/logs/cdxindexer.log
-3. ./ks.gen-cdx-index-wget.sh     >> /opt/regal/logs/cdxindexer.log
-4. ./ks.gen-cdx-index-heritrix.sh >> /opt/regal/logs/cdxindexer.log
-5. ./ks.merge-sort-cdx-indexes.sh lesesaal_cdx
-6. ./ks.create-path-index.sh lesesaal_cdx
+Aufbau der OWB-Sammlung "lesesaal"
+ssh wayback@wayback2
+cd /opt/wayback/wayback-scripts/
+1. ./ks.gen-cdx-index-wpull.sh    >> /opt/wayback/logs/cdxindexer.log
+2. ./ks.gen-cdx-index-cdn.sh lesesaal     >> /opt/wayback/logs/cdxindexer.log
+3. ./ks.gen-cdx-index-wget.sh     >> /opt/wayback/logs/cdxindexer.log
+4. ./ks.gen-cdx-index-heritrix.sh >> /opt/wayback/logs/cdxindexer.log
+wayback@wayback2:/opt/wayback/openwayback-data/lesesaal/cdx-dateien> ls edoweb:*/20*/*.cdx edoweb:*/20*/warcs/*.cdx edoweb_cdn:*/20*/*.cdx | wc
+   6557    6557  557384
+5. ./ks.merge-sort-cdx-indexes.sh lesesaal
+6. ./ks.create-path-index-lesesaal.sh
 
 II. Weltweit-Sammlung
-Indexieren von public-data und cdn-data in der OWB-Sammlung "weltweit_cdx"
+Indexieren von public-data und cdn-data in der OWB-Sammlung "weltweit"
 1. ./ks.gen-cdx-index-public.sh          >> /opt/regal/logs/cdxindexer.log
-2. ./ks.gen-cdx-index-cdn.sh weltweit_cdx     >> /opt/regal/logs/cdxindexer.log
-3. ./ks.merge-sort-cdx-indexes.sh weltweit_cdx
-4. ./ks.create-path-index.sh weltweit_cdx
-
-Umschalten der OWB auf CDX-Index Betrieb.
-cd /opt/regal/openwayback
-wayback.xml und CDXCollection.xml entsprechend geändert, gezogen von https://github.com/inkuss/openwayback/tree/hbz-lbz-2.4.0
+2. ./ks.gen-cdx-index-cdn.sh weltweit    >> /opt/regal/logs/cdxindexer.log
+wayback@wayback2:/opt/wayback/openwayback-data/weltweit/cdx-dateien> ls edoweb:*/20*/*.cdx edoweb:*/20*/warcs/*.cdx edoweb_cdn:*/20*/*.cdx | wc
+   2547    2547  204204
+3. ./ks.merge-sort-cdx-indexes.sh weltweit
+4. ./ks.create-path-index-weltweit.sh
 
 OWB 2.4.0 ausrollen.
+cd /opt/regal
+git clone https://github.com/inkuss/openwayback.git
 cd /opt/regal/openwayback
 git fetch inkuss
 git checkout hbz-lbz-2.4.0
 git pull
+wayback.xml und CDXCollection.xml entsprechend ändern, Server-Namen, Collection-Namen, Archivverzeichnisse anpassen
 mvn clean install
 BUILD SUCCESS
 ls -l /opt/regal/openwayback/wayback-webapp/target/openwayback-2.4.0.war
 -rw-rw-r-- 1 edoweb edoweb 53938698 Okt 22 13:59 /opt/regal/openwayback/wayback-webapp/target/openwayback-2.4.0.war
 
-
 Deploy des neuen WAR:
 cd /opt/regal/tomcat-for-openwayback/webapps
 rm -r ROOT
 cp -p /opt/regal/openwayback/wayback-webapp/target/openwayback-2.4.0.war /opt/regal/tomcat-for-openwayback/webapps/ROOT.war
-Das Log verfolgen:
 Das Log verfolgen:
 22-Oct-2019 14:07:15.817 INFO [localhost-startStop-3] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /opt/regal/tomcat-for-openwayback/webapps/ROOT.war has finished in 10,101 ms

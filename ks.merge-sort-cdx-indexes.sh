@@ -7,7 +7,7 @@ if [ ! $1 ] ; then
   exit 0
 fi
 echo "collection: $collection"
-cd /opt/regal/openwayback-data/$collection
+cd /opt/wayback/openwayback-data/$collection
 export LC_ALL=C;
 # merge indexes from wpull-data, cdn-data, heritrix-data and wget-data
 if [ ! -d "cdx-index" ]; then mkdir cdx-index; fi
