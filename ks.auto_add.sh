@@ -3,11 +3,12 @@
 # Automatisches Indexieren neuer Webschnitte
 # Autor: Kuss, 16.09.2019 für PyWB
 #        Kuss, 28.10.2019 für OWB-CDX
+# letzte Änderung: 07.11.2019
 # ***************************************************************************
-collection_lesesaal=/opt/regal/openwayback-data/lesesaal
-collection_weltweit=/opt/regal/openwayback-data/weltweit
-owb_verz=/opt/regal/openwayback
-logfile=/opt/regal/logs/ks.auto_add.log
+collection_lesesaal=/opt/wayback/openwayback-data/lesesaal
+collection_weltweit=/opt/wayback/openwayback-data/weltweit
+owb_verz=/opt/wayback/openwayback
+logfile=/opt/wayback/logs/ks.auto_add.log
 data_basedir=/data2
 echo "" >> $logfile
 echo "********************************************************************************" >> $logfile
@@ -191,20 +192,20 @@ echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "START merge and sort indexes" >> $logfile
 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> $logfile
 # 5.1
-cd /opt/regal/wayback-scripts
-./ks.merge-sort-cdx-indexes.sh lesesaal_cdx >> $logfile
+cd /opt/wayback/wayback-scripts
+./ks.merge-sort-cdx-indexes.sh lesesaal >> $logfile
 # 5.2
-cd /opt/regal/wayback-scripts
-./ks.merge-sort-cdx-indexes.sh weltweit_cdx >> $logfile
+cd /opt/wayback/wayback-scripts
+./ks.merge-sort-cdx-indexes.sh weltweit >> $logfile
 
 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> $logfile
 echo "START creating path index" >> $logfile
 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> $logfile
 # 6.1
-cd /opt/regal/wayback-scripts
+cd /opt/wayback/wayback-scripts
 ./ks.create-path-index-lesesaal.sh >> $logfile
 # 6.2
-cd /opt/regal/wayback-scripts
+cd /opt/wayback/wayback-scripts
 ./ks.create-path-index-weltweit.sh >> $logfile
 
 echo "********************************************************************************" >> $logfile
