@@ -183,7 +183,7 @@ for warcfile in edoweb:*/20*/*.warc.gz edoweb:*/20*/warcs/*.warc.gz; do
   # Erzeugt Indexdatei durch Kopieren der Indexdatei vom Lesesaal
   mkdir -p $collection_weltweit/cdx-dateien/$cdxindex
   rmdir $collection_weltweit/cdx-dateien/$cdxindex
-  cp -p $collection_lesesaal/cdx-dateien/$cdxindex $collection_weltweit/cdx-dateien/$cdxindex >> $logfile
+  cp $collection_lesesaal/cdx-dateien/$cdxindex $collection_weltweit/cdx-dateien/$cdxindex >> $logfile
   cd $dataverz
 done
 
