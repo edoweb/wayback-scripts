@@ -5,7 +5,7 @@ echo "Indexiere alle WARCS unter wpull-data, je eine .cdx-Datei pro WARC"
 echo "******************************************************************"
 dataverz=/data2/wpull-data
 owb_verz=/opt/wayback/openwayback
-collection_verz=/opt/wayback/openwayback-data/lesesaal
+collection_verz=/opt/wayback/openwayback-data/lesesaal_cdx
 cd $dataverz
 logdatei=/opt/wayback/logs/cdxindexer.log # bitte Ausgabe hierhin umleiten
 # for warc in `find . -name "*.warc.gz"`; do # dauert zu lange

@@ -4,8 +4,8 @@
 # Autor: Kuss, 16.09.2019 für PyWB
 #        Kuss, 28.10.2019 für OWB-CDX
 # ***************************************************************************
-collection_lesesaal=/opt/regal/openwayback-data/lesesaal
-collection_weltweit=/opt/regal/openwayback-data/weltweit
+collection_lesesaal=/opt/regal/openwayback-data/lesesaal_cdx
+collection_weltweit=/opt/regal/openwayback-data/weltweit_cdx
 owb_verz=/opt/regal/openwayback
 logfile=/opt/regal/logs/ks.auto_add.log
 data_basedir=/data2
@@ -183,7 +183,7 @@ for warcfile in edoweb:*/20*/*.warc.gz edoweb:*/20*/warcs/*.warc.gz; do
   # Erzeugt Indexdatei durch Kopieren der Indexdatei vom Lesesaal
   mkdir -p $collection_weltweit/cdx-dateien/$cdxindex
   rmdir $collection_weltweit/cdx-dateien/$cdxindex
-  cp -p $collection_lesesaal/cdx-dateien/$cdxindex $collection_weltweit/cdx-dateien/$cdxindex >> $logfile
+  cp $collection_lesesaal/cdx-dateien/$cdxindex $collection_weltweit/cdx-dateien/$cdxindex >> $logfile
   cd $dataverz
 done
 

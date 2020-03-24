@@ -17,9 +17,9 @@ cat index001.cdx | sort -u > index.tmp.cdx
 mv index.tmp.cdx index001.cdx
 # Hier Historienstände rotieren und ältesten wegschmeißen
 cd cdx-index.HIST/
-rm index.cdx.7
-N=7
-M=6
+rm index.cdx.5
+N=5
+M=4
 while [ $M -gt 0 ]; do
    # echo Zeile $N
     mv index.cdx.$M index.cdx.$N
