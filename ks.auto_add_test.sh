@@ -1,21 +1,20 @@
 #!/bin/bash
 # ***************************************************************************
 # Automatisches Indexieren neuer Webschnitte
-# Autor: Kuss, 16.09.2019 für PyWB
-#        Kuss, 28.10.2019 für OWB-CDX
-# letzte Änderung: 07.11.2019
+# Autor: Kuss, 19.02.2020 
+#        für neue, auf edoweb-test geharvestete Webschnitte (nur diese)
 # ***************************************************************************
-collection_lesesaal=/opt/wayback/openwayback-data/lesesaal
-collection_weltweit=/opt/wayback/openwayback-data/weltweit
-owb_verz=/opt/wayback/openwayback
-logfile=/opt/wayback/logs/ks.auto_add.log
-data_basedir=/data2
+collection_lesesaal=/opt/regal/openwayback-data/lesesaal
+collection_weltweit=/opt/regal/openwayback-data/weltweit
+owb_verz=/opt/regal/openwayback
+logfile=/opt/regal/logs/ks.auto_add_test.log
+data_basedir=/opt/regal
 echo "" >> $logfile
 echo "********************************************************************************" >> $logfile
 echo `date`
 echo `date` >> $logfile
-echo "START Auto adding new web harvests"
-echo "START Auto adding new web harvests" >> $logfile
+echo "START Auto adding new web harvests of edoweb-test"
+echo "START Auto adding new web harvests of edoweb-test" >> $logfile
 echo "********************************************************************************" >> $logfile
 
 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> $logfile
@@ -64,16 +63,16 @@ for warcfile in edoweb:*/20*/warcs/*.warc.gz; do
   # echo "warcfile=$dataverz/$warcfile" >> $logfile
   cdxindex=`echo $warcfile | sed 's/\.warc\.gz$/.cdx/'`
   # Gibt es in der Sammlung schon einen CDX-Index zu dieser WARC-Datei ?
-  if [ -f $collection_lesesaal/cdx-dateien/$cdxindex ]; then
+  if [ -f "$collection_lesesaal/cdx-dateien/$cdxindex" ]; then
     # echo "Indexdatei existiert" >> $logfile
     # Ist der Index neuer ?
-    if test `find $collection_lesesaal/cdx-dateien/$cdxindex -prune -newer $warcfile`; then
+    if test `find "$collection_lesesaal/cdx-dateien/$cdxindex" -prune -newer $warcfile`; then
       # echo "Indexdatei ist neuer. Nichts zu tun." >> $logfile
       continue
     fi
     echo "Indexdatei ist älter" >> $logfile
     # Indexdatei löschen
-    rm $collection_lesesaal/cdx-dateien/$cdxindex
+    rm "$collection_lesesaal/cdx-dateien/$cdxindex"
   fi
 
   # Indexdatei exsitiert noch nicht oder ist älter
@@ -81,9 +80,9 @@ for warcfile in edoweb:*/20*/warcs/*.warc.gz; do
   echo "Index wird erzeugt." >> $logfile
   # Erzeugt Indexdatei
   mkdir -p $collection_lesesaal/cdx-dateien/$cdxindex
-  rmdir $collection_lesesaal/cdx-dateien/$cdxindex
+  rmdir "$collection_lesesaal/cdx-dateien/$cdxindex"
   cd $owb_verz
-  bin/cdx-indexer $dataverz/$warcfile $collection_lesesaal/cdx-dateien/$cdxindex >> $logfile
+  bin/cdx-indexer $dataverz/$warcfile "$collection_lesesaal/cdx-dateien/$cdxindex" >> $logfile
   cd $dataverz
 done
 
@@ -141,7 +140,7 @@ for warcfile in edoweb_cdn:*/20*/*.warc.gz; do
     fi
     echo "Indexdatei ist älter" >> $logfile
     # Indexdatei löschen
-    rm $collection_weltweit/cdx-dateien/$cdxindex
+    rm "$collection_weltweit/cdx-dateien/$cdxindex"
   fi
 
   # Indexdatei exsitiert noch nicht oder ist älter
@@ -192,26 +191,26 @@ echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 echo "START merge and sort indexes" >> $logfile
 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> $logfile
 # 5.1
-cd /opt/wayback/wayback-scripts
+cd /opt/regal/wayback-scripts
 ./ks.merge-sort-cdx-indexes.sh lesesaal >> $logfile
 # 5.2
-cd /opt/wayback/wayback-scripts
+cd /opt/regal/wayback-scripts
 ./ks.merge-sort-cdx-indexes.sh weltweit >> $logfile
 
 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> $logfile
 echo "START creating path index" >> $logfile
 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" >> $logfile
 # 6.1
-cd /opt/wayback/wayback-scripts
+cd /opt/regal/wayback-scripts
 ./ks.create-path-index-lesesaal.sh >> $logfile
 # 6.2
-cd /opt/wayback/wayback-scripts
+cd /opt/regal/wayback-scripts
 ./ks.create-path-index-weltweit.sh >> $logfile
 
 echo "********************************************************************************" >> $logfile
 echo `date`
 echo `date` >> $logfile
-echo "ENDE Auto adding new web harvests"
-echo "ENDE Auto adding new web harvests" >> $logfile
+echo "ENDE Auto adding new web harvests of edoweb-test"
+echo "ENDE Auto adding new web harvests of edoweb-test" >> $logfile
 echo "********************************************************************************" >> $logfile
 exit 0

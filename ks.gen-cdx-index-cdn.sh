@@ -9,10 +9,10 @@ if [ ! $1 ] ; then
   exit 0
 fi
 echo "collection: $collection"
-logdatei=/opt/regal/logs/cdxindexer.log # bitte Ausgabe hierhin umleiten
+logdatei=/opt/wayback/logs/cdxindexer.log # bitte Ausgabe hierhin umleiten
 dataverz=/data2/cdn-data
-owb_verz=/opt/regal/openwayback
-collection_verz=/opt/regal/openwayback-data/$collection
+owb_verz=/opt/wayback/openwayback
+collection_verz=/opt/wayback/openwayback-data/$collection
 cd $dataverz
 for warc in `ls edoweb_cdn:*/20*/*.warc.gz` ; do
   echo "warc=$warc"

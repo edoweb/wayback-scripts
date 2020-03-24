@@ -3,10 +3,10 @@ echo "*********************************************************************"
 echo `date`
 echo "Indexiere alle WARCS unter heritrix-data, je eine .cdx-Datei pro WARC"
 echo "*********************************************************************"
-logdatei=/opt/regal/logs/cdxindexer.log # bitte Ausgabe hierhin umleiten
+logdatei=/opt/wayback/logs/cdxindexer.log # bitte Ausgabe hierhin umleiten
 dataverz=/data2/heritrix-data
-owb_verz=/opt/regal/openwayback
-collection_verz=/opt/regal/openwayback-data/lesesaal_cdx
+owb_verz=/opt/wayback/openwayback
+collection_verz=/opt/wayback/openwayback-data/lesesaal
 cd $dataverz
 for warc in `ls edoweb:*/20*/warcs/*.warc.gz`; do
   echo "warc=$warc"
